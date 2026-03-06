@@ -1,0 +1,20 @@
+# Berry Blom
+
+Berry Blom is a Data & AI Engineer based in Lisbon, Portugal.
+He builds AI-powered tools and systems that help businesses save money and reclaim time.
+
+## Projects
+
+- Mailreplai (https://mailreplai.com): AI-powered Outlook add-in for drafting email replies
+- RankMyLandingPage (https://rankmylandingpage.com): AI feedback tool for landing pages
+
+## Writing
+
+Berry writes about AI engineering, building products, and lessons from shipping software.
+
+## Contact
+
+- Website: https://berryblom.com
+- LinkedIn: https://linkedin.com/in/berryblom
+- GitHub: https://github.com/berryblom
+- Email: hello@berryblom.com
