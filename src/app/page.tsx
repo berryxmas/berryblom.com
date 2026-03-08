@@ -18,14 +18,15 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="py-14 animate-fade-up">
+      <section className="animate-fade-up py-[76px]">
         <h1
-          className="tracking-tight mb-3"
+          className="mb-[18px] tracking-tight"
           style={{
             fontFamily: '"Lora", serif',
-            fontWeight: 500,
-            fontSize: "clamp(28px, 5vw, 40px)",
-            lineHeight: 1.2,
+            fontWeight: 400,
+            fontSize: "clamp(26px, 5vw, 36px)",
+            lineHeight: 1.28,
+            letterSpacing: "-0.015em",
           }}
         >
           Helping businesses use{" "}
@@ -34,39 +35,31 @@ export default function Home() {
           to save money &amp; reclaim their time.
         </h1>
 
-        <div className="mt-5 flex items-start gap-4 sm:gap-5">
+        <div className="mb-10 flex max-w-[400px] items-start gap-4">
           <div
-            className="relative w-[104px] shrink-0 overflow-hidden rounded-[18px] border shadow-[0_18px_30px_rgba(42,37,32,0.12)] sm:w-[112px]"
+            className="relative w-[82px] shrink-0 overflow-hidden rounded-[14px] border shadow-[0_10px_20px_rgba(42,37,32,0.08)]"
             style={{
               aspectRatio: "674 / 1198",
               backgroundColor: "var(--paper-dark)",
-              borderColor: "rgba(196, 94, 58, 0.14)",
+              borderColor: "var(--border)",
             }}
           >
             <Image
               src="/berry-profile-picture.JPG"
               alt="Berry Blom"
               fill
-              sizes="(min-width: 640px) 112px, 104px"
+              sizes="82px"
               className="object-cover"
               priority
             />
-            <div
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-9"
-              style={{
-                background:
-                  "linear-gradient(to top, rgba(42,37,32,0.18), rgba(42,37,32,0))",
-              }}
-            />
           </div>
-
           <p
-            className="max-w-lg min-w-0 pt-1 text-base leading-relaxed"
+            className="pt-1 text-[15px] leading-[1.65]"
             style={{
               color: "var(--ink-muted)",
             }}
           >
-            Data &amp; AI Engineer, entrepreneur. From Amsterdam, based on Lisbon. I build tools and systems that make AI work in practice.
+            Data &amp; AI Engineer, entrepreneur. From Amsterdam, based in Lisbon. I build tools and systems that make AI work in practice.
           </p>
         </div>
 
@@ -74,17 +67,17 @@ export default function Home() {
       </section>
 
       {/* Projects */}
-      <section className="py-14 border-t animate-fade-up animate-delay-1" style={{ borderColor: "var(--border)" }}>
-        <div className="flex items-baseline justify-between mb-6">
-          <h2
-            className="text-xl tracking-tight"
-            style={{ fontFamily: '"Lora", serif', fontWeight: 500, color: "var(--ink-faint)" }}
+      <section className="border-t py-14 animate-fade-up animate-delay-1" style={{ borderColor: "var(--border)" }}>
+        <div className="mb-7 flex items-baseline justify-between">
+          <span
+            className="text-[10.5px] uppercase tracking-[0.15em]"
+            style={{ color: "var(--ink-faint)" }}
           >
             Projects
-          </h2>
+          </span>
           <a
             href="/projects"
-            className="text-sm transition-colors duration-200"
+            className="text-[12px] transition-opacity duration-200 hover:opacity-70"
             style={{ color: "var(--terracotta)" }}
           >
             View all &rarr;
@@ -111,17 +104,17 @@ export default function Home() {
       </section>
 
       {/* Writing */}
-      <section className="py-14 border-t animate-fade-up animate-delay-2" style={{ borderColor: "var(--border)" }}>
-        <div className="flex items-baseline justify-between mb-6">
-          <h2
-            className="text-xl tracking-tight"
-            style={{ fontFamily: '"Lora", serif', fontWeight: 500 }}
+      <section className="border-t py-14 animate-fade-up animate-delay-2" style={{ borderColor: "var(--border)" }}>
+        <div className="mb-7 flex items-baseline justify-between">
+          <span
+            className="text-[10.5px] uppercase tracking-[0.15em]"
+            style={{ color: "var(--ink-faint)" }}
           >
             Writing
-          </h2>
+          </span>
           <a
             href="/blog"
-            className="text-sm transition-colors duration-200"
+            className="text-[12px] transition-opacity duration-200 hover:opacity-70"
             style={{ color: "var(--terracotta)" }}
           >
             View all &rarr;
@@ -132,21 +125,25 @@ export default function Home() {
             <a
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="block group"
+              className="block border-b py-[19px] first:border-t group"
+              style={{ borderColor: "var(--border)" }}
             >
               <div className="flex items-baseline justify-between gap-4">
-                <span className="font-medium text-sm group-hover:text-(--terracotta) transition-colors duration-200">
+                <span
+                  className="transition-colors duration-200 group-hover:text-(--terracotta)"
+                  style={{ fontFamily: '"Lora", serif', fontSize: "16px", fontWeight: 400 }}
+                >
                   {post.title}
                 </span>
                 <time
                   dateTime={post.date}
-                  className="text-xs shrink-0"
+                  className="shrink-0 text-xs"
                   style={{ color: "var(--ink-faint)" }}
                 >
                   {formatDate(post.date)}
                 </time>
               </div>
-              <p className="text-sm mt-1" style={{ color: "var(--ink-muted)" }}>
+              <p className="mt-1 text-sm" style={{ color: "var(--ink-muted)" }}>
                 {post.description}
               </p>
             </a>

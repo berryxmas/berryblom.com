@@ -38,6 +38,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/favicon_io-bb/favicon.ico" sizes="any" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon_io-bb/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon_io-bb/favicon-16x16.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="/favicon_io-bb/apple-touch-icon.png"
+        />
+        <link rel="manifest" href="/favicon_io-bb/site.webmanifest" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -51,11 +69,11 @@ export default function RootLayout({
       </head>
       <body>
         <div className="mx-auto max-w-[640px] px-7">
-          <nav className="flex items-center justify-between py-8 animate-fade-up">
+          <nav className="flex items-center justify-between pt-9 animate-fade-up">
             <a
               href="/"
               aria-label="Berry Blom home"
-              className="-ml-6 block h-35 w-35 shrink-0 transition-transform duration-200 hover:scale-[1.03]"
+              className="-ml-3 block h-[48px] w-[48px] shrink-0 transition-transform duration-200 hover:scale-[1.03]"
             >
               <Image
                 src="/wax-seal-bb.png"
@@ -66,7 +84,7 @@ export default function RootLayout({
                 className="h-full w-full object-contain"
               />
             </a>
-            <div className="flex gap-6 text-sm" style={{ color: "var(--ink-muted)" }}>
+            <div className="flex gap-7 text-[13px]" style={{ color: "var(--ink-muted)", letterSpacing: "0.03em" }}>
               <a
                 href="/projects"
                 className="transition-colors duration-200 hover:text-(--terracotta)"
@@ -92,7 +110,7 @@ export default function RootLayout({
             <span>&copy; {new Date().getFullYear()} Berry Blom</span>
             <div className="flex gap-5">
               <a
-                href="https://linkedin.com/in/berryblom"
+                href="https://linkedin.com/in/berry-blom"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="transition-colors duration-200 hover:text-(--terracotta)"
@@ -100,7 +118,7 @@ export default function RootLayout({
                 LinkedIn
               </a>
               <a
-                href="https://github.com/berryblom"
+                href="https://github.com/berryxmas"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="transition-colors duration-200 hover:text-(--terracotta)"

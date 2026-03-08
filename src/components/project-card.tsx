@@ -12,7 +12,7 @@ interface ProjectCardProps {
 export function ProjectCard({ slug, title, description, tag, url }: ProjectCardProps) {
   return (
     <div
-      className="block p-5 rounded-lg border transition-all duration-200"
+      className="block rounded-[10px] border p-6 transition-all duration-200"
       style={{
         borderColor: "var(--border)",
         backgroundColor: "var(--paper-dark)",
@@ -26,11 +26,11 @@ export function ProjectCard({ slug, title, description, tag, url }: ProjectCardP
         e.currentTarget.style.borderColor = "var(--border)";
       }}
     >
-      <div className="flex items-center justify-between mb-1.5">
+      <div className="mb-[9px] flex items-start justify-between">
         <a
           href={`/projects/${slug}`}
-          className="font-medium text-sm transition-colors duration-200 hover:text-(--terracotta)"
-          style={{ color: "var(--ink)" }}
+          className="text-[17px] transition-colors duration-200 hover:text-(--terracotta)"
+          style={{ color: "var(--ink)", fontFamily: '"Lora", serif', fontWeight: 500 }}
         >
           {title}
         </a>
@@ -40,18 +40,18 @@ export function ProjectCard({ slug, title, description, tag, url }: ProjectCardP
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm transition-colors duration-200 hover:text-(--terracotta)"
-            style={{ color: "var(--ink-muted)" }}
+            style={{ color: "var(--ink-faint)", fontSize: "15px" }}
           >
             &#8599;
           </a>
         )}
       </div>
-      <p className="text-sm" style={{ color: "var(--ink-muted)" }}>
+      <p className="text-[13.5px] leading-[1.6]" style={{ color: "var(--ink-muted)" }}>
         {description}
       </p>
       {tag && (
         <span
-          className="inline-block text-xs px-2 py-0.5 rounded-full mt-2"
+          className="mt-[14px] inline-block rounded-[4px] px-[9px] py-[3px] text-[10.5px] uppercase tracking-[0.09em]"
           style={{
             backgroundColor: "var(--terracotta-pale)",
             color: "var(--terracotta)",

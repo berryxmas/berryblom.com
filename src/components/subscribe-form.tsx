@@ -40,10 +40,10 @@ export function SubscribeForm() {
   }
 
   return (
-    <div className="mt-6">
+    <div>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col sm:flex-row gap-3"
+        className="flex max-w-[370px] flex-col gap-2 sm:flex-row"
       >
         <input
           type="email"
@@ -51,38 +51,46 @@ export function SubscribeForm() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"
           required
-          className="flex-1 px-4 py-2.5 rounded-lg text-sm outline-none transition-all duration-200 border"
+          className="flex-1 rounded-[7px] border px-[14px] py-[10px] text-[13px] outline-none transition-all duration-200 placeholder:text-(--ink-faint)"
           style={{
             backgroundColor: "var(--paper-dark)",
             borderColor: "var(--border)",
             color: "var(--ink)",
             fontFamily: '"DM Sans", sans-serif',
           }}
-          onFocus={(e) => (e.target.style.borderColor = "var(--terracotta-light)")}
-          onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
+          onFocus={(e) => {
+            e.target.style.borderColor = "var(--terracotta-light)";
+          }}
+          onBlur={(e) => {
+            e.target.style.borderColor = "var(--border)";
+          }}
         />
         <button
           type="submit"
           disabled={status === "loading"}
-          className="px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer"
+          className="cursor-pointer rounded-[7px] px-[18px] py-[10px] text-[13px] transition-colors duration-200"
           style={{
             backgroundColor: "var(--ink)",
             color: "var(--paper)",
             fontFamily: '"DM Sans", sans-serif',
           }}
-          onMouseOver={(e) => (e.currentTarget.style.opacity = "0.85")}
-          onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
+          onMouseOver={(e) => {
+            e.currentTarget.style.backgroundColor = "var(--terracotta)";
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.backgroundColor = "var(--ink)";
+          }}
         >
           {status === "loading" ? "..." : "Subscribe"}
         </button>
         {status === "error" && (
-          <p className="text-sm self-center" style={{ color: "var(--terracotta)" }}>
+          <p className="self-center text-sm" style={{ color: "var(--terracotta)" }}>
             Something went wrong. Try again.
           </p>
         )}
       </form>
-      <p className="text-xs mt-2" style={{ color: "var(--ink-faint)" }}>
-        Occasional posts on AI, building, and what I'm learning. No spam.
+      <p className="mt-[9px] text-[11px]" style={{ color: "var(--ink-faint)" }}>
+        Occasional posts on AI, building, and what I&apos;m learning. No spam.
       </p>
     </div>
   );

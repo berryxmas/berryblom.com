@@ -75,3 +75,6 @@ next-env.d.ts
 
 # claude
 .claude
+
+# docs folder
+/docs/

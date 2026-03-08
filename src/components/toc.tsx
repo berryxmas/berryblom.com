@@ -52,7 +52,7 @@ export function TableOfContents({ content }: { content: string }) {
   if (headings.length === 0) return null;
 
   return (
-    <aside className="hidden xl:block fixed right-[calc(50%-520px)] top-32 w-56">
+    <aside className="sticky top-32 w-56">
       <p
         className="text-xs font-medium uppercase tracking-wider mb-4"
         style={{ color: "var(--ink-faint)", fontFamily: '"DM Sans", sans-serif' }}

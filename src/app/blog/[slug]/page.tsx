@@ -51,12 +51,14 @@ export default async function BlogPostPage({
   if (!post) notFound();
 
   return (
-    <div className="animate-fade-up">
-      <TableOfContents content={post.content} />
+    <div className="animate-fade-up relative">
+      <div className="hidden xl:block absolute left-[calc(100%+3.5rem)] top-0 bottom-0 w-56">
+        <TableOfContents content={post.content} />
+      </div>
       <article className="py-14">
         <a
           href="/blog"
-          className="text-sm inline-block mb-8 hover:text-[var(--terracotta)] transition-colors duration-200"
+          className="text-sm inline-block mb-8 hover:text-(--terracotta) transition-colors duration-200"
           style={{ color: "var(--ink-faint)" }}
         >
           &larr; Back to blog
