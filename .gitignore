@@ -73,8 +73,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# claude
-.claude
+# claude folder
+/claude
+/.claude/
 
 # docs folder
 /docs/
