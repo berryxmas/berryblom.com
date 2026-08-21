@@ -23,4 +23,4 @@ The add-in injects a sidebar into Outlook. When you open an email, it analyzes t
 
 ## Lessons learned
 
-Building for Outlook's add-in ecosystem is not for the faint of heart. The sandboxing model is restrictive, and testing across Outlook Web, Desktop (Windows), and Mac requires patience. But the distribution advantage of being inside the inbox — where people spend hours daily — makes it worth it.
+Building for Outlook's add-in ecosystem is not for the faint of heart. The sandboxing model is restrictive, and testing across Outlook Web, Desktop (Windows), and Mac requires patience. But the distribution advantage of being inside the inbox, where people spend hours daily, makes it worth it.

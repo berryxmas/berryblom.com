@@ -1,82 +1,50 @@
 import type { Metadata } from "next";
-import { getBlogPosts } from "@/lib/content";
+import { getBlogPosts, getTags } from "@/lib/content";
+import { PostTeaser } from "@/components/post-teaser";
+import { TagList } from "@/components/tag-list";
 
 export const metadata: Metadata = {
   title: "Writing",
-  description: "Writing about AI engineering, building products, and lessons from shipping software.",
+  description:
+    "Notes on building, AI, and life, from a data scientist who ships products.",
 };
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
 
 export default function BlogPage() {
   const posts = getBlogPosts();
+  const tags = getTags();
+  const [featured, ...rest] = posts;
 
   return (
-    <div className="animate-fade-up">
-      <section className="py-14">
-        <h1
-          className="text-2xl tracking-tight mb-2"
-          style={{ fontFamily: '"Lora", serif', fontWeight: 500 }}
-        >
+    <div className="animate-fade-up py-14">
+      <header className="mb-10 max-w-[40rem]">
+        <h1 className="font-serif text-[clamp(2rem,4vw,2.75rem)] font-medium tracking-tight">
           Writing
         </h1>
-        <p className="text-sm mb-10" style={{ color: "var(--ink-muted)" }}>
-          Thoughts on AI engineering, building products, and shipping software.
+        <p className="mt-3 text-[16px] leading-relaxed text-[var(--ink-muted)]">
+          Building, AI, and life. Use the tags to skip to what you came for.
         </p>
+      </header>
 
-        <div className="space-y-6">
-          {posts.map((post) => (
-            <a
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="block group"
-            >
-              <div className="flex items-baseline justify-between gap-4">
-                <span className="font-medium text-sm group-hover:text-[var(--terracotta)] transition-colors duration-200">
-                  {post.title}
-                </span>
-                <time
-                  dateTime={post.date}
-                  className="text-xs shrink-0"
-                  style={{ color: "var(--ink-faint)" }}
-                >
-                  {formatDate(post.date)}
-                </time>
-              </div>
-              <p className="text-sm mt-1" style={{ color: "var(--ink-muted)" }}>
-                {post.description}
-              </p>
-              {post.tags.length > 0 && (
-                <div className="flex gap-2 mt-2">
-                  {post.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs px-2 py-0.5 rounded-full"
-                      style={{
-                        backgroundColor: "var(--terracotta-pale)",
-                        color: "var(--terracotta)",
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </a>
-          ))}
-          {posts.length === 0 && (
-            <p className="text-sm" style={{ color: "var(--ink-faint)" }}>
-              No posts yet. Check back soon.
-            </p>
-          )}
+      {tags.length > 0 && (
+        <section className="mb-12" aria-label="Tags">
+          <TagList tags={tags.map((tag) => tag.slug)} />
+        </section>
+      )}
+
+      {featured && (
+        <div className="mb-10">
+          <PostTeaser post={featured} featured />
         </div>
-      </section>
+      )}
+
+      <div>
+        {rest.map((post) => (
+          <PostTeaser key={post.slug} post={post} />
+        ))}
+        {posts.length === 0 && (
+          <p className="text-sm text-[var(--ink-muted)]">No posts yet. Check back soon.</p>
+        )}
+      </div>
     </div>
   );
 }

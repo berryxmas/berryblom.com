@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     const { error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
-      subject: "You're on the list — Berry Blom",
+      subject: "You are on the list | Berry Blom",
       react: React.createElement(WelcomeEmail),
     });
 

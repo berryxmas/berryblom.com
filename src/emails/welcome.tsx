@@ -19,7 +19,7 @@ export default function WelcomeEmail() {
   return (
     <Html>
       <Head />
-      <Preview>You're on the list — occasional notes on AI and building.</Preview>
+      <Preview>You are on the list. Occasional notes on building, AI, and life.</Preview>
       <Body style={main}>
         <Container style={outer}>
           {/* Letter-style panel with wax seal */}
@@ -37,8 +37,8 @@ export default function WelcomeEmail() {
             <Heading style={heading}>Thanks for subscribing</Heading>
 
             <Text style={paragraph}>
-              You're on the list. I'll send occasional notes on AI, building, and
-              what I'm learning — no spam.
+              You are on the list. I will send occasional notes on building, AI,
+              and life. No spam.
             </Text>
 
             <Text style={paragraph}>

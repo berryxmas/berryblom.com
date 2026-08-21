@@ -1,7 +1,7 @@
 ---
 title: Shipping fast as a solo builder
 date: 2025-08-10
-description: How I go from idea to live product in under a week — tools, workflow, and mindset.
+description: "How I go from idea to live product in under a week: tools, workflow, and mindset."
 tags: [building, productivity]
 ---
 
@@ -27,7 +27,7 @@ I use Claude to generate boilerplate, draft copy, and think through edge cases. 
 
 ### Monday: Validate the idea
 
-Talk to 3-5 potential users. Not surveys — actual conversations. "Would you use this?" is useless. "Show me how you handle this today" is gold.
+Talk to 3-5 potential users. Not surveys, actual conversations. "Would you use this?" is useless. "Show me how you handle this today" is gold.
 
 ### Tuesday-Thursday: Build the MVP
 
@@ -39,4 +39,4 @@ Deploy it. Post it. Send it to the people I talked to on Monday. Their reactions
 
 ## What I've learned
 
-The biggest enemy of shipping is not technical complexity — it's scope creep disguised as "doing it properly." Every feature you add before launch is a bet that you know what users want. You don't. Ship, learn, iterate.
+The biggest enemy of shipping is not technical complexity. It is scope creep disguised as "doing it properly." Every feature you add before launch is a bet that you know what users want. You don't. Ship, learn, iterate.

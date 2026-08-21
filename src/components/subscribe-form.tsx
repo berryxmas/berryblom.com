@@ -30,10 +30,7 @@ export function SubscribeForm() {
 
   if (status === "success") {
     return (
-      <p
-        className="text-sm mt-1"
-        style={{ color: "var(--terracotta)" }}
-      >
+      <p className="text-[15px] text-[var(--terracotta)]">
         You&apos;re in. Thanks for subscribing.
       </p>
     );
@@ -41,56 +38,30 @@ export function SubscribeForm() {
 
   return (
     <div>
-      <form
-        onSubmit={handleSubmit}
-        className="flex max-w-[370px] flex-col gap-2 sm:flex-row"
-      >
+      <form onSubmit={handleSubmit} className="flex max-w-[420px] flex-col gap-2 sm:flex-row">
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"
           required
-          className="flex-1 rounded-[7px] border px-[14px] py-[10px] text-[13px] outline-none transition-all duration-200 placeholder:text-(--ink-faint)"
-          style={{
-            backgroundColor: "var(--paper-dark)",
-            borderColor: "var(--border)",
-            color: "var(--ink)",
-            fontFamily: '"DM Sans", sans-serif',
-          }}
-          onFocus={(e) => {
-            e.target.style.borderColor = "var(--terracotta-light)";
-          }}
-          onBlur={(e) => {
-            e.target.style.borderColor = "var(--border)";
-          }}
+          className="flex-1 rounded-lg border border-[var(--border)] bg-[var(--paper-raised)] px-3.5 py-2.5 text-[15px] text-[var(--ink)] outline-none transition-[border-color] duration-200 placeholder:text-[var(--ink-faint)] focus:border-[var(--terracotta)]"
         />
         <button
           type="submit"
           disabled={status === "loading"}
-          className="cursor-pointer rounded-[7px] px-[18px] py-[10px] text-[13px] transition-colors duration-200"
-          style={{
-            backgroundColor: "var(--ink)",
-            color: "var(--paper)",
-            fontFamily: '"DM Sans", sans-serif',
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.backgroundColor = "var(--terracotta)";
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.backgroundColor = "var(--ink)";
-          }}
+          className="cursor-pointer rounded-lg bg-[var(--ink)] px-5 py-2.5 text-[15px] text-[var(--paper)] transition-colors duration-200 hover:bg-[var(--terracotta)] disabled:cursor-wait"
         >
           {status === "loading" ? "..." : "Subscribe"}
         </button>
-        {status === "error" && (
-          <p className="self-center text-sm" style={{ color: "var(--terracotta)" }}>
-            Something went wrong. Try again.
-          </p>
-        )}
       </form>
-      <p className="mt-[9px] text-[11px]" style={{ color: "var(--ink-faint)" }}>
-        Occasional posts on AI, building, and what I&apos;m learning. No spam.
+      {status === "error" && (
+        <p className="mt-2 text-sm text-[var(--terracotta)]">
+          Something went wrong. Try again.
+        </p>
+      )}
+      <p className="mt-2.5 text-[13px] text-[var(--ink-muted)]">
+        Occasional posts on building, AI, and life. No spam.
       </p>
     </div>
   );

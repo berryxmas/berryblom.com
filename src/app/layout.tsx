@@ -1,33 +1,59 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Image from "next/image";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import { dmSans, jetbrainsMono, lora } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: {
-    default: "Berry Blom — Data & AI Engineer",
+    default: "Berry Blom | Building, AI, and life",
     template: "%s | Berry Blom",
   },
   description:
-    "Berry Blom is a Data & AI Engineer based in Lisbon. Building AI-powered tools that help businesses save money and reclaim time.",
+    "I help companies use AI, then I write about what I learned. Data and AI freelancer turned product builder, Amsterdam to Lisbon.",
   metadataBase: new URL("https://berryblom.com"),
+  alternates: {
+    types: {
+      "application/rss+xml": "/feed.xml",
+    },
+  },
   openGraph: {
-    title: "Berry Blom — Data & AI Engineer",
+    title: "Berry Blom | Building, AI, and life",
     description:
-      "Building AI-powered tools that help businesses save money and reclaim time.",
+      "I help companies use AI, then I write about what I learned.",
     url: "https://berryblom.com",
     siteName: "Berry Blom",
     type: "website",
+    locale: "en_US",
   },
   twitter: {
-    card: "summary",
-    title: "Berry Blom — Data & AI Engineer",
+    card: "summary_large_image",
+    title: "Berry Blom | Building, AI, and life",
     description:
-      "Building AI-powered tools that help businesses save money and reclaim time.",
+      "I help companies use AI, then I write about what I learned.",
   },
   robots: {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: [
+      { url: "/favicon_io-bb/favicon.ico", sizes: "any" },
+      {
+        url: "/favicon_io-bb/favicon-32x32.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
+      {
+        url: "/favicon_io-bb/favicon-16x16.png",
+        sizes: "16x16",
+        type: "image/png",
+      },
+    ],
+    apple: "/favicon_io-bb/apple-touch-icon.png",
+  },
+  manifest: "/favicon_io-bb/site.webmanifest",
 };
 
 export default function RootLayout({
@@ -36,104 +62,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon_io-bb/favicon.ico" sizes="any" />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon_io-bb/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon_io-bb/favicon-16x16.png"
-        />
-        <link
-          rel="apple-touch-icon"
-          href="/favicon_io-bb/apple-touch-icon.png"
-        />
-        <link rel="manifest" href="/favicon_io-bb/site.webmanifest" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400&family=Lora:wght@400;500&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${dmSans.variable} ${lora.variable} ${jetbrainsMono.variable}`}
+    >
       <body>
-        <div className="mx-auto max-w-[640px] px-7">
-          <nav className="flex items-center justify-between pt-9 animate-fade-up">
-            <a
-              href="/"
-              aria-label="Berry Blom home"
-              className="-ml-3 block h-[48px] w-[48px] shrink-0 transition-transform duration-200 hover:scale-[1.03]"
-            >
-              <Image
-                src="/wax-seal-bb.png"
-                alt="Berry Blom wax seal"
-                width={1024}
-                height={576}
-                priority
-                className="h-full w-full object-contain"
-              />
-            </a>
-            <div className="flex gap-7 text-[13px]" style={{ color: "var(--ink-muted)", letterSpacing: "0.03em" }}>
-              <a
-                href="/projects"
-                className="transition-colors duration-200 hover:text-(--terracotta)"
-              >
-                Projects
-              </a>
-              <a
-                href="/blog"
-                className="transition-colors duration-200 hover:text-(--terracotta)"
-              >
-                Writing
-              </a>
+        <ThemeProvider>
+          <div className="site-root">
+            <div className="site-shell">
+              <SiteHeader />
+              <main>{children}</main>
             </div>
-          </nav>
-          <main>{children}</main>
-          <footer
-            className="animate-fade-up animate-delay-4 border-t py-10 mt-14 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm"
-            style={{
-              borderColor: "var(--border)",
-              color: "var(--ink-faint)",
-            }}
-          >
-            <span>&copy; {new Date().getFullYear()} Berry Blom</span>
-            <div className="flex gap-5">
-              <a
-                href="https://linkedin.com/in/berry-blom"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors duration-200 hover:text-(--terracotta)"
-              >
-                LinkedIn
-              </a>
-              <a
-                href="https://github.com/berryxmas"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors duration-200 hover:text-(--terracotta)"
-              >
-                GitHub
-              </a>
-              <a
-                href="mailto:hello@berryblom.com"
-                className="transition-colors duration-200 hover:text-(--terracotta)"
-              >
-                Email
-              </a>
-            </div>
-          </footer>
-        </div>
+            <SiteFooter />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

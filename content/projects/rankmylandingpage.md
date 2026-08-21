@@ -8,7 +8,7 @@ url: https://rankmylandingpage.com
 
 ## What it does
 
-Paste your landing page URL and get an instant AI-powered audit. It scores your page on clarity, persuasion, design, and technical SEO — then gives you specific, actionable feedback to improve conversions.
+Paste your landing page URL and get an instant AI-powered audit. It scores your page on clarity, persuasion, design, and technical SEO, then gives you specific, actionable feedback to improve conversions.
 
 ## How it works
 
@@ -23,4 +23,4 @@ The tool takes a screenshot and extracts the page content, then runs it through 
 
 ## Lessons learned
 
-The hardest part wasn't the AI — it was making the feedback genuinely useful. Early versions gave vague advice like "improve your headline." After weeks of prompt iteration, the tool now gives feedback specific enough to act on immediately.
+The hardest part wasn't the AI. It was making the feedback genuinely useful. Early versions gave vague advice like "improve your headline." After weeks of prompt iteration, the tool now gives feedback specific enough to act on immediately.

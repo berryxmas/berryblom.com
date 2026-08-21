@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { getProject, getProjects } from "@/lib/content";
 import { MdxContent } from "@/components/mdx-content";
+import { ProductPreview } from "@/components/product-preview";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 export async function generateStaticParams() {
   return getProjects().map((p) => ({ slug: p.slug }));
@@ -37,44 +39,33 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   return (
-    <div className="animate-fade-up">
-      <article className="py-14">
-        <a
+    <div className="animate-fade-up py-14">
+      <article className="reading-col">
+        <Link
           href="/projects"
-          className="text-sm transition-colors duration-200 inline-block mb-8"
-          style={{ color: "var(--ink-faint)" }}
+          className="mb-8 inline-block text-sm text-[var(--ink-muted)] transition-colors duration-200 hover:text-[var(--terracotta)]"
         >
-          &larr; Back to projects
-        </a>
+          ← Projects
+        </Link>
 
-        <h1
-          className="tracking-tight mb-2"
-          style={{
-            fontFamily: '"Lora", serif',
-            fontWeight: 500,
-            fontSize: "clamp(24px, 4.5vw, 32px)",
-            lineHeight: 1.25,
-          }}
-        >
+        <div className="mb-8">
+          <ProductPreview slug={project.slug} />
+        </div>
+
+        <h1 className="font-serif text-[clamp(1.85rem,4.4vw,2.75rem)] leading-[1.18] font-medium tracking-tight">
           {project.title}
         </h1>
 
-        <p className="text-sm mb-4" style={{ color: "var(--ink-muted)" }}>
+        <p className="mt-3 text-[17px] leading-relaxed text-[var(--ink-muted)]">
           {project.description}
         </p>
 
-        <div className="flex items-center gap-3 mb-10">
-          <span
-            className="text-xs px-2.5 py-1 rounded-full"
-            style={{
-              backgroundColor: "var(--terracotta-pale)",
-              color: "var(--terracotta)",
-            }}
-          >
+        <div className="mt-5 mb-12 flex flex-wrap items-center gap-3">
+          <span className="rounded-full bg-[var(--terracotta-pale)] px-2.5 py-1 text-xs text-[var(--terracotta)]">
             {project.status}
           </span>
           {project.tag && (
-            <span className="text-xs" style={{ color: "var(--ink-faint)" }}>
+            <span className="text-xs uppercase tracking-[0.1em] text-[var(--ink-faint)]">
               {project.tag}
             </span>
           )}
@@ -83,13 +74,9 @@ export default async function ProjectPage({
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs px-3 py-1 rounded-full border transition-colors duration-200"
-              style={{
-                borderColor: "var(--terracotta)",
-                color: "var(--terracotta)",
-              }}
+              className="rounded-full border border-[var(--terracotta)] px-3 py-1 text-xs text-[var(--terracotta)] transition-colors duration-200 hover:bg-[var(--terracotta-pale)]"
             >
-              Visit site &rarr;
+              Visit site →
             </a>
           )}
           {project.github && (
@@ -97,11 +84,7 @@ export default async function ProjectPage({
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs px-3 py-1 rounded-full border transition-colors duration-200"
-              style={{
-                borderColor: "var(--border)",
-                color: "var(--ink-muted)",
-              }}
+              className="rounded-full border border-[var(--border)] px-3 py-1 text-xs text-[var(--ink-muted)] transition-colors duration-200 hover:text-[var(--ink)]"
             >
               GitHub
             </a>

@@ -29,7 +29,7 @@ With 100 users, you can handle edge cases manually. With 10,000 users, you need 
 
 ### Defensive parsing
 
-Never trust model output. Parse it, validate it, and have a fallback for when it's garbage. Treat the model like an unreliable external API — because that's what it is.
+Never trust model output. Parse it, validate it, and have a fallback for when it's garbage. Treat the model like an unreliable external API, because that's what it is.
 
 ### Streaming responses
 
@@ -37,7 +37,7 @@ Show partial results immediately. A streaming response that arrives over 3 secon
 
 ### Human-in-the-loop by default
 
-Don't auto-send. Don't auto-apply. Let the user review and edit. This isn't a weakness — it's the correct UX for systems that are right 90% of the time.
+Don't auto-send. Don't auto-apply. Let the user review and edit. This isn't a weakness. It's the correct UX for systems that are right 90% of the time.
 
 ## The bottom line
 

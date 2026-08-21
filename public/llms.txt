@@ -1,7 +1,14 @@
 # Berry Blom
 
-Berry Blom is a Data & AI Engineer based in Lisbon, Portugal.
-He builds AI-powered tools and systems that help businesses save money and reclaim time.
+Berry Blom is a data scientist and product builder based in Lisbon.
+He helps companies use AI, then writes about what he learned, and the rest of life.
+
+## Background
+
+- Master's in data science from the University of Amsterdam
+- Published research on GPT-2 in 2022
+- Data and AI freelancer turned product builder
+- Amsterdam to Lisbon
 
 ## Projects
 
@@ -10,7 +17,7 @@ He builds AI-powered tools and systems that help businesses save money and recla
 
 ## Writing
 
-Berry writes about AI engineering, building products, and lessons from shipping software.
+Berry writes about building, AI, and life.
 
 ## Contact
 

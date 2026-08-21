@@ -1,89 +1,62 @@
 import { getBlogPosts, getProjects } from "@/lib/content";
 import { SubscribeForm } from "@/components/subscribe-form";
 import { ProjectCard } from "@/components/project-card";
+import { PostTeaser } from "@/components/post-teaser";
+import { LogoCloud } from "@/components/logo-cloud";
 import Image from "next/image";
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
+import Link from "next/link";
 
 export default function Home() {
   const posts = getBlogPosts().slice(0, 3);
-  const projects = getProjects().slice(0, 3);
+  const projects = getProjects().slice(0, 4);
 
   return (
     <div>
-      {/* Hero */}
-      <section className="animate-fade-up py-[76px]">
-        <h1
-          className="mb-[18px] tracking-tight"
-          style={{
-            fontFamily: '"Lora", serif',
-            fontWeight: 400,
-            fontSize: "clamp(26px, 5vw, 36px)",
-            lineHeight: 1.28,
-            letterSpacing: "-0.015em",
-          }}
-        >
-          Helping businesses use{" "}
-          <span style={{ color: "var(--terracotta)" }}>AI</span>
+      <section className="hero animate-fade-up">
+        <h1 className="hero-title">
+          I help companies use AI,
           <br />
-          to save money &amp; reclaim their time.
+          then I write about what I learned.
         </h1>
-
-        <div className="mb-10 flex max-w-[400px] items-start gap-4">
-          <div
-            className="relative w-[82px] shrink-0 overflow-hidden rounded-[14px] border shadow-[0_10px_20px_rgba(42,37,32,0.08)]"
-            style={{
-              aspectRatio: "674 / 1198",
-              backgroundColor: "var(--paper-dark)",
-              borderColor: "var(--border)",
-            }}
-          >
-            <Image
-              src="/berry-profile-picture.JPG"
-              alt="Berry Blom"
-              fill
-              sizes="82px"
-              className="object-cover"
-              priority
-            />
+        <div className="hero-rule" aria-hidden="true" />
+        <div className="hero-about">
+          <div className="hero-portrait">
+            <span className="hero-portrait-plate" aria-hidden="true" />
+            <div className="hero-portrait-frame">
+              <Image
+                src="/berry-profile-picture.JPG"
+                alt="Berry Blom"
+                fill
+                sizes="(max-width: 640px) 108px, 148px"
+                className="object-cover"
+                priority
+              />
+            </div>
           </div>
-          <p
-            className="pt-1 text-[15px] leading-[1.65]"
-            style={{
-              color: "var(--ink-muted)",
-            }}
-          >
-            Data &amp; AI Engineer, entrepreneur. From Amsterdam, based in Lisbon. I build tools and systems that make AI work in practice.
-          </p>
+          <div className="hero-copy">
+            <p>
+              Data and AI freelancer turned product builder. Amsterdam to
+              Lisbon. Writing about what I learn along the way.
+            </p>
+            <Link href="/about" className="hero-more">
+              Read more →
+            </Link>
+          </div>
         </div>
-
-        <SubscribeForm />
+        <LogoCloud />
       </section>
 
-      {/* Projects */}
-      <section className="border-t py-14 animate-fade-up animate-delay-1" style={{ borderColor: "var(--border)" }}>
-        <div className="mb-7 flex items-baseline justify-between">
-          <span
-            className="text-[10.5px] uppercase tracking-[0.15em]"
-            style={{ color: "var(--ink-faint)" }}
-          >
-            Projects
-          </span>
-          <a
+      <section className="animate-fade-up animate-delay-1 border-t border-[var(--border)] pt-10 pb-16">
+        <div className="mb-5 flex items-baseline justify-between">
+          <span className="eyebrow">Projects</span>
+          <Link
             href="/projects"
-            className="text-[12px] transition-opacity duration-200 hover:opacity-70"
-            style={{ color: "var(--terracotta)" }}
+            className="text-[13px] text-[var(--terracotta)] transition-opacity duration-200 hover:opacity-70"
           >
-            View all &rarr;
-          </a>
+            View all →
+          </Link>
         </div>
-        <div className="space-y-4">
+        <div className="grid gap-5 md:grid-cols-2">
           {projects.map((project) => (
             <ProjectCard
               key={project.slug}
@@ -95,65 +68,32 @@ export default function Home() {
               url={project.url}
             />
           ))}
-          {projects.length === 0 && (
-            <p className="text-sm" style={{ color: "var(--ink-faint)" }}>
-              Projects coming soon.
-            </p>
-          )}
         </div>
       </section>
 
-      {/* Writing */}
-      <section className="border-t py-14 animate-fade-up animate-delay-2" style={{ borderColor: "var(--border)" }}>
-        <div className="mb-7 flex items-baseline justify-between">
-          <span
-            className="text-[10.5px] uppercase tracking-[0.15em]"
-            style={{ color: "var(--ink-faint)" }}
-          >
-            Writing
-          </span>
-          <a
+      <section className="animate-fade-up animate-delay-2 border-t border-[var(--border)] py-16">
+        <div className="mb-5 flex items-baseline justify-between">
+          <span className="eyebrow">Writing</span>
+          <Link
             href="/blog"
-            className="text-[12px] transition-opacity duration-200 hover:opacity-70"
-            style={{ color: "var(--terracotta)" }}
+            className="text-[13px] text-[var(--terracotta)] transition-opacity duration-200 hover:opacity-70"
           >
-            View all &rarr;
-          </a>
+            View all →
+          </Link>
         </div>
-        <div className="space-y-4">
+        <div>
           {posts.map((post) => (
-            <a
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="block border-b py-[19px] first:border-t group"
-              style={{ borderColor: "var(--border)" }}
-            >
-              <div className="flex items-baseline justify-between gap-4">
-                <span
-                  className="transition-colors duration-200 group-hover:text-(--terracotta)"
-                  style={{ fontFamily: '"Lora", serif', fontSize: "16px", fontWeight: 400 }}
-                >
-                  {post.title}
-                </span>
-                <time
-                  dateTime={post.date}
-                  className="shrink-0 text-xs"
-                  style={{ color: "var(--ink-faint)" }}
-                >
-                  {formatDate(post.date)}
-                </time>
-              </div>
-              <p className="mt-1 text-sm" style={{ color: "var(--ink-muted)" }}>
-                {post.description}
-              </p>
-            </a>
+            <PostTeaser key={post.slug} post={post} />
           ))}
-          {posts.length === 0 && (
-            <p className="text-sm" style={{ color: "var(--ink-faint)" }}>
-              Posts coming soon.
-            </p>
-          )}
         </div>
+      </section>
+
+      <section className="animate-fade-up animate-delay-3 border-t border-[var(--border)] py-16">
+        <span className="eyebrow">Stay in touch</span>
+        <p className="mt-4 mb-6 max-w-[36ch] font-serif text-[1.45rem] leading-snug tracking-tight">
+          Occasional notes on building, AI, and life.
+        </p>
+        <SubscribeForm />
       </section>
     </div>
   );

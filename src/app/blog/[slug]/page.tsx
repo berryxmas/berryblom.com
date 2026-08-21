@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
-import { getBlogPost, getBlogPosts } from "@/lib/content";
+import { getAdjacentPosts, getBlogPost, getBlogPosts } from "@/lib/content";
 import { MdxContent } from "@/components/mdx-content";
 import { TableOfContents } from "@/components/toc";
+import { PostPager } from "@/components/post-pager";
+import { TagList } from "@/components/tag-list";
+import { formatDate, readingTimeLabel } from "@/lib/format";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 export async function generateStaticParams() {
   return getBlogPosts().map((post) => ({ slug: post.slug }));
@@ -24,21 +28,14 @@ export async function generateMetadata({
       description: post.description,
       type: "article",
       url: `/blog/${slug}`,
+      publishedTime: post.date,
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: post.title,
       description: post.description,
     },
   };
-}
-
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 }
 
 export default async function BlogPostPage({
@@ -49,64 +46,36 @@ export default async function BlogPostPage({
   const { slug } = await params;
   const post = getBlogPost(slug);
   if (!post) notFound();
+  const { newer, older } = getAdjacentPosts(slug);
 
   return (
-    <div className="animate-fade-up relative">
-      <div className="hidden xl:block absolute left-[calc(100%+3.5rem)] top-0 bottom-0 w-56">
-        <TableOfContents content={post.content} />
-      </div>
-      <article className="py-14">
-        <a
+    <div className="blog-layout animate-fade-up">
+      <header className="blog-header">
+        <Link
           href="/blog"
-          className="text-sm inline-block mb-8 hover:text-(--terracotta) transition-colors duration-200"
-          style={{ color: "var(--ink-faint)" }}
+          className="mb-8 inline-block text-sm text-[var(--ink-muted)] transition-colors duration-200 hover:text-[var(--terracotta)]"
         >
-          &larr; Back to blog
-        </a>
+          ← Writing
+        </Link>
 
-        <h1
-          className="tracking-tight mb-3"
-          style={{
-            fontFamily: '"Lora", serif',
-            fontWeight: 500,
-            fontSize: "clamp(24px, 4.5vw, 32px)",
-            lineHeight: 1.25,
-          }}
-        >
+        <h1 className="font-serif text-[clamp(1.85rem,4.4vw,2.75rem)] leading-[1.18] font-medium tracking-tight">
           {post.title}
         </h1>
 
-        <div className="flex items-center gap-3 mb-10">
-          <time
-            dateTime={post.date}
-            className="text-sm"
-            style={{ color: "var(--ink-faint)" }}
-          >
-            {formatDate(post.date)}
-          </time>
-          {post.tags.length > 0 && (
-            <>
-              <span style={{ color: "var(--border)" }}>&middot;</span>
-              <div className="flex gap-2">
-                {post.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs px-2 py-0.5 rounded-full"
-                    style={{
-                      backgroundColor: "var(--terracotta-pale)",
-                      color: "var(--terracotta)",
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </>
-          )}
+        <div className="mt-5 mb-2 flex flex-wrap items-center gap-3 text-[14px] text-[var(--ink-muted)]">
+          <time dateTime={post.date}>{formatDate(post.date, "long")}</time>
+          <span aria-hidden="true">·</span>
+          <span>{readingTimeLabel(post.readingTime)}</span>
         </div>
+        <TagList tags={post.tags} />
+      </header>
 
+      <TableOfContents content={post.content} />
+
+      <div className="blog-body">
         <MdxContent source={post.content} />
-      </article>
+        <PostPager newer={newer} older={older} />
+      </div>
     </div>
   );
 }
