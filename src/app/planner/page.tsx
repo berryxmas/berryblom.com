@@ -77,14 +77,14 @@ function fmtShort(iso: string) {
   return dt.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
 }
 
-type CleanDay = {
+type ServiceDay = {
   date: string;
   guest: string;
   reason: string;
   urgent: boolean;
 };
 
-function getCleanDays(bookings: Booking[]): CleanDay[] {
+function getServiceDays(bookings: Booking[]): ServiceDay[] {
   const sorted = [...bookings].sort(
     (a, b) => parseDate(a.checkOut).getTime() - parseDate(b.checkOut).getTime()
   );
@@ -136,7 +136,7 @@ function isCheckInDay(date: Date, booking: Booking) {
   return toISO(date) === booking.checkIn;
 }
 
-export default function CleaningPage() {
+export default function PlannerPage() {
   const [unlocked, setUnlocked] = useState(false);
   const [code, setCode] = useState("");
   const [error, setError] = useState(false);
@@ -144,10 +144,10 @@ export default function CleaningPage() {
   const [calMonth, setCalMonth] = useState(8); // September (0-indexed)
   const [calYear, setCalYear] = useState(2026);
 
-  const cleanDays = useMemo(() => getCleanDays(BOOKINGS), []);
-  const cleanDateSet = useMemo(
-    () => new Set(cleanDays.map((c) => c.date)),
-    [cleanDays]
+  const serviceDays = useMemo(() => getServiceDays(BOOKINGS), []);
+  const serviceDateSet = useMemo(
+    () => new Set(serviceDays.map((c) => c.date)),
+    [serviceDays]
   );
 
   function handleSubmit(e: React.FormEvent) {
@@ -169,7 +169,7 @@ export default function CleaningPage() {
           className="w-full max-w-xs space-y-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-8 shadow-sm"
         >
           <h1 className="text-xl font-semibold text-center text-neutral-900 dark:text-neutral-100">
-            🔒 Cleaning Schedule
+            🔒 Apartment Planner
           </h1>
           <p className="text-sm text-neutral-500 dark:text-neutral-400 text-center">
             Enter passcode to view
@@ -234,9 +234,9 @@ export default function CleaningPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold">🏠 Cleaning Schedule</h1>
+            <h1 className="text-2xl font-bold">🏠 Apartment Planner</h1>
             <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
-              Apartment bookings & cleaner schedule
+              Bookings & service schedule
             </p>
           </div>
           <button
@@ -306,7 +306,7 @@ export default function CleaningPage() {
               {monthGrid.map((date, i) => {
                 if (!date) return <div key={i} />;
                 const iso = toISO(date);
-                const cleanDay = cleanDays.find((c) => c.date === iso);
+                const serviceDay = serviceDays.find((c) => c.date === iso);
                 const bookingsHere = BOOKINGS.filter((b) =>
                   isInRange(date, b)
                 );
@@ -321,8 +321,8 @@ export default function CleaningPage() {
                 let textColor = "text-neutral-700 dark:text-neutral-300";
                 let label = "";
 
-                if (cleanDay) {
-                  bg = cleanDay.urgent
+                if (serviceDay) {
+                  bg = serviceDay.urgent
                     ? "bg-red-100 dark:bg-red-950 border-red-300 dark:border-red-800"
                     : "bg-amber-100 dark:bg-amber-950 border-amber-300 dark:border-amber-800";
                   label = "🧹";
@@ -345,15 +345,15 @@ export default function CleaningPage() {
                         {bookingsHere[0].guest.split(" ")[0]}
                       </div>
                     )}
-                    {cleanDay && (
+                    {serviceDay && (
                       <div
                         className={`text-[10px] mt-0.5 font-medium ${
-                          cleanDay.urgent
+                          serviceDay.urgent
                             ? "text-red-600 dark:text-red-400"
                             : "text-amber-600 dark:text-amber-400"
                         }`}
                       >
-                        {cleanDay.urgent ? "URGENT" : "Clean"}
+                        {serviceDay.urgent ? "URGENT" : "Service"}
                       </div>
                     )}
                   </div>
@@ -369,7 +369,7 @@ export default function CleaningPage() {
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="w-3 h-3 rounded bg-amber-100 dark:bg-amber-950 border border-amber-300 dark:border-amber-800" />
-                🧹 Clean needed
+                🧹 Service needed
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="w-3 h-3 rounded bg-red-100 dark:bg-red-950 border border-red-300 dark:border-red-800" />
@@ -377,8 +377,8 @@ export default function CleaningPage() {
               </span>
             </div>
 
-            {/* Cleaner schedule summary */}
-            <CleanerSchedule cleanDays={cleanDays} />
+            {/* Service schedule summary */}
+            <ServiceSchedule serviceDays={serviceDays} />
           </div>
         )}
 
@@ -389,7 +389,7 @@ export default function CleaningPage() {
               <h2 className="text-lg font-semibold mb-3">Bookings</h2>
               <div className="space-y-3">
                 {BOOKINGS.map((b, i) => {
-                  const clean = cleanDays[i];
+                  const service = serviceDays[i];
                   return (
                     <div
                       key={i}
@@ -406,10 +406,10 @@ export default function CleaningPage() {
                           </p>
                         </div>
                       </div>
-                      {clean && (
+                      {service && (
                         <div
                           className={`mt-3 flex items-start gap-2 rounded-lg p-2.5 text-sm ${
-                            clean.urgent
+                            service.urgent
                               ? "bg-red-50 dark:bg-red-950/50 text-red-700 dark:text-red-300"
                               : "bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300"
                           }`}
@@ -417,11 +417,11 @@ export default function CleaningPage() {
                           <span>🧹</span>
                           <div>
                             <p className="font-medium">
-                              Clean on {fmtDate(clean.date)}
-                              {clean.urgent && " ⚠️"}
+                              Service on {fmtDate(service.date)}
+                              {service.urgent && " ⚠️"}
                             </p>
                             <p className="text-xs opacity-80 mt-0.5">
-                              {clean.reason}
+                              {service.reason}
                             </p>
                           </div>
                         </div>
@@ -432,7 +432,7 @@ export default function CleaningPage() {
               </div>
             </div>
 
-            <CleanerSchedule cleanDays={cleanDays} />
+            <ServiceSchedule serviceDays={serviceDays} />
           </div>
         )}
       </div>
@@ -440,14 +440,14 @@ export default function CleaningPage() {
   );
 }
 
-function CleanerSchedule({ cleanDays }: { cleanDays: CleanDay[] }) {
+function ServiceSchedule({ serviceDays }: { serviceDays: ServiceDay[] }) {
   return (
     <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4">
       <h3 className="font-semibold mb-3 flex items-center gap-2">
-        🧹 Cleaner Schedule
+        🧹 Service Schedule
       </h3>
       <div className="space-y-2">
-        {cleanDays.map((c, i) => (
+        {serviceDays.map((c, i) => (
           <div
             key={i}
             className="flex items-start gap-3 py-2 border-b last:border-0 border-neutral-100 dark:border-neutral-800"
@@ -460,7 +460,7 @@ function CleanerSchedule({ cleanDays }: { cleanDays: CleanDay[] }) {
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium">{fmtDate(c.date)}</p>
               <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
-                After {c.guest} checks out
+                After {c.guest} checks out — prepare for next arrival
               </p>
               <p
                 className={`text-xs mt-0.5 ${
