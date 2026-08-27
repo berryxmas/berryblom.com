@@ -2,12 +2,15 @@
 
 import { useState, useMemo } from "react";
 
+type Source = "Booking.com" | "HomeExchange" | "Friends";
+
 type Booking = {
   guest: string;
   checkIn: string; // ISO date
   checkOut: string; // ISO date
   nights: number;
   guests: string;
+  source: Source;
 };
 
 const BOOKINGS: Booking[] = [
@@ -17,6 +20,7 @@ const BOOKINGS: Booking[] = [
     checkOut: "2026-09-06",
     nights: 2,
     guests: "4 adults, 3 children",
+    source: "Booking.com",
   },
   {
     guest: "Alisson Philipponneau",
@@ -24,6 +28,7 @@ const BOOKINGS: Booking[] = [
     checkOut: "2026-09-20",
     nights: 2,
     guests: "7 adults",
+    source: "Booking.com",
   },
   {
     guest: "Buisson Pamella",
@@ -31,6 +36,7 @@ const BOOKINGS: Booking[] = [
     checkOut: "2026-09-27",
     nights: 3,
     guests: "5 adults",
+    source: "Booking.com",
   },
   {
     guest: "Violetta Coretnic",
@@ -38,6 +44,7 @@ const BOOKINGS: Booking[] = [
     checkOut: "2026-10-01",
     nights: 3,
     guests: "5 adults",
+    source: "Booking.com",
   },
 ];
 
@@ -49,6 +56,28 @@ const MONTHS = [
 ];
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const DAYS_SHORT = ["M", "T", "W", "T", "F", "S", "S"];
+
+const SOURCE_STYLES: Record<Source, { label: string; bg: string; text: string; dot: string }> = {
+  "Booking.com": {
+    label: "Booking",
+    bg: "bg-blue-100 dark:bg-blue-950",
+    text: "text-blue-700 dark:text-blue-300",
+    dot: "bg-blue-500",
+  },
+  HomeExchange: {
+    label: "HomeExchange",
+    bg: "bg-green-100 dark:bg-green-950",
+    text: "text-green-700 dark:text-green-300",
+    dot: "bg-green-500",
+  },
+  Friends: {
+    label: "Friends",
+    bg: "bg-purple-100 dark:bg-purple-950",
+    text: "text-purple-700 dark:text-purple-300",
+    dot: "bg-purple-500",
+  },
+};
 
 function parseDate(iso: string) {
   const [y, m, d] = iso.split("-").map(Number);
@@ -145,10 +174,6 @@ export default function PlannerPage() {
   const [calYear, setCalYear] = useState(2026);
 
   const serviceDays = useMemo(() => getServiceDays(BOOKINGS), []);
-  const serviceDateSet = useMemo(
-    () => new Set(serviceDays.map((c) => c.date)),
-    [serviceDays]
-  );
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -202,13 +227,6 @@ export default function PlannerPage() {
 
   // Main content
   const monthGrid = getMonthGrid(calYear, calMonth);
-  const bookingsThisMonth = BOOKINGS.filter((b) => {
-    const ci = parseDate(b.checkIn);
-    const co = parseDate(b.checkOut);
-    const monthStart = new Date(calYear, calMonth, 1);
-    const monthEnd = new Date(calYear, calMonth + 1, 0);
-    return ci <= monthEnd && co >= monthStart;
-  });
 
   function prevMonth() {
     if (calMonth === 0) {
@@ -230,28 +248,28 @@ export default function PlannerPage() {
 
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100">
-      <div className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
+      <div className="max-w-3xl mx-auto px-3 sm:px-4 py-6 sm:py-12">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-2xl font-bold">🏠 Apartment Planner</h1>
-            <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
+        <div className="flex items-center justify-between mb-6 sm:mb-8">
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold truncate">🏠 Apartment Planner</h1>
+            <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mt-1">
               Bookings & service schedule
             </p>
           </div>
           <button
             onClick={() => setUnlocked(false)}
-            className="text-xs text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300"
+            className="text-xs text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 shrink-0 ml-3"
           >
             Lock
           </button>
         </div>
 
         {/* View toggle */}
-        <div className="flex gap-1 p-1 rounded-lg bg-neutral-200 dark:bg-neutral-800 mb-6 w-fit">
+        <div className="flex gap-1 p-1 rounded-lg bg-neutral-200 dark:bg-neutral-800 mb-5 sm:mb-6 w-fit">
           <button
             onClick={() => setView("calendar")}
-            className={`px-4 py-1.5 rounded-md text-sm font-medium transition ${
+            className={`px-3 sm:px-4 py-1.5 rounded-md text-sm font-medium transition ${
               view === "calendar"
                 ? "bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 shadow-sm"
                 : "text-neutral-500 dark:text-neutral-400"
@@ -261,7 +279,7 @@ export default function PlannerPage() {
           </button>
           <button
             onClick={() => setView("list")}
-            className={`px-4 py-1.5 rounded-md text-sm font-medium transition ${
+            className={`px-3 sm:px-4 py-1.5 rounded-md text-sm font-medium transition ${
               view === "list"
                 ? "bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 shadow-sm"
                 : "text-neutral-500 dark:text-neutral-400"
@@ -271,36 +289,56 @@ export default function PlannerPage() {
           </button>
         </div>
 
+        {/* Source legend */}
+        <div className="flex flex-wrap gap-2 sm:gap-3 mb-5 sm:mb-6">
+          {(Object.keys(SOURCE_STYLES) as Source[]).map((src) => {
+            const s = SOURCE_STYLES[src];
+            return (
+              <span
+                key={src}
+                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${s.bg} ${s.text}`}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
+                {s.label}
+              </span>
+            );
+          })}
+        </div>
+
         {/* Calendar View */}
         {view === "calendar" && (
-          <div className="space-y-6">
+          <div className="space-y-5 sm:space-y-6">
             {/* Month nav */}
             <div className="flex items-center justify-between">
               <button
                 onClick={prevMonth}
-                className="p-2 rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-800 transition"
+                className="p-2 -ml-2 rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-800 transition touch-manipulation"
+                aria-label="Previous month"
               >
                 ←
               </button>
-              <h2 className="text-lg font-semibold">
+              <h2 className="text-base sm:text-lg font-semibold">
                 {MONTHS[calMonth]} {calYear}
               </h2>
               <button
                 onClick={nextMonth}
-                className="p-2 rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-800 transition"
+                className="p-2 -mr-2 rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-800 transition touch-manipulation"
+                aria-label="Next month"
               >
                 →
               </button>
             </div>
 
             {/* Calendar grid */}
-            <div className="grid grid-cols-7 gap-1">
-              {DAYS.map((d) => (
+            <div className="grid grid-cols-7 gap-0.5 sm:gap-1">
+              {/* Day headers - short on mobile */}
+              {DAYS.map((d, i) => (
                 <div
                   key={d}
-                  className="text-center text-xs font-medium text-neutral-400 py-2"
+                  className="text-center text-[10px] sm:text-xs font-medium text-neutral-400 py-1.5 sm:py-2"
                 >
-                  {d}
+                  <span className="sm:hidden">{DAYS_SHORT[i]}</span>
+                  <span className="hidden sm:inline">{d}</span>
                 </div>
               ))}
               {monthGrid.map((date, i) => {
@@ -309,9 +347,6 @@ export default function PlannerPage() {
                 const serviceDay = serviceDays.find((c) => c.date === iso);
                 const bookingsHere = BOOKINGS.filter((b) =>
                   isInRange(date, b)
-                );
-                const isCheckout = BOOKINGS.some((b) =>
-                  isCheckoutDay(date, b)
                 );
                 const isCheckIn = BOOKINGS.some((b) =>
                   isCheckInDay(date, b)
@@ -334,26 +369,29 @@ export default function PlannerPage() {
                 return (
                   <div
                     key={i}
-                    className={`min-h-[60px] sm:min-h-[72px] rounded-lg border border-neutral-200 dark:border-neutral-800 p-1.5 ${bg} ${textColor} text-xs`}
+                    className={`min-h-[44px] sm:min-h-[72px] rounded-md sm:rounded-lg border border-neutral-200 dark:border-neutral-800 p-1 sm:p-1.5 ${bg} ${textColor} text-[11px] sm:text-xs overflow-hidden`}
                   >
-                    <div className="font-medium">{date.getDate()}</div>
+                    <div className="font-medium leading-tight">{date.getDate()}</div>
                     {label && (
-                      <div className="text-sm leading-none mt-0.5">{label}</div>
+                      <div className="text-xs sm:text-sm leading-none mt-0.5">{label}</div>
                     )}
                     {bookingsHere.length > 0 && (
-                      <div className="text-[10px] text-neutral-500 dark:text-neutral-400 mt-0.5 truncate">
+                      <div className="text-[8px] sm:text-[10px] text-neutral-500 dark:text-neutral-400 mt-0.5 truncate">
                         {bookingsHere[0].guest.split(" ")[0]}
                       </div>
                     )}
                     {serviceDay && (
                       <div
-                        className={`text-[10px] mt-0.5 font-medium ${
+                        className={`text-[8px] sm:text-[10px] mt-0.5 font-medium leading-tight ${
                           serviceDay.urgent
                             ? "text-red-600 dark:text-red-400"
                             : "text-amber-600 dark:text-amber-400"
                         }`}
                       >
-                        {serviceDay.urgent ? "URGENT" : "Service"}
+                        <span className="sm:hidden">!</span>
+                        <span className="hidden sm:inline">
+                          {serviceDay.urgent ? "URGENT" : "Service"}
+                        </span>
                       </div>
                     )}
                   </div>
@@ -362,7 +400,7 @@ export default function PlannerPage() {
             </div>
 
             {/* Legend */}
-            <div className="flex flex-wrap gap-4 text-xs text-neutral-500 dark:text-neutral-400">
+            <div className="flex flex-wrap gap-3 sm:gap-4 text-xs text-neutral-500 dark:text-neutral-400">
               <span className="flex items-center gap-1.5">
                 <span className="w-3 h-3 rounded bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900" />
                 Booked
@@ -384,31 +422,40 @@ export default function PlannerPage() {
 
         {/* List View */}
         {view === "list" && (
-          <div className="space-y-6">
+          <div className="space-y-5 sm:space-y-6">
             <div>
-              <h2 className="text-lg font-semibold mb-3">Bookings</h2>
+              <h2 className="text-base sm:text-lg font-semibold mb-3">Bookings</h2>
               <div className="space-y-3">
                 {BOOKINGS.map((b, i) => {
                   const service = serviceDays[i];
+                  const src = SOURCE_STYLES[b.source];
                   return (
                     <div
                       key={i}
-                      className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4"
+                      className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-3 sm:p-4"
                     >
-                      <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start justify-between gap-2">
                         <div className="flex-1 min-w-0">
-                          <p className="font-medium truncate">{b.guest}</p>
-                          <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className="font-medium truncate">{b.guest}</p>
+                            <span
+                              className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] sm:text-xs font-medium shrink-0 ${src.bg} ${src.text}`}
+                            >
+                              <span className={`w-1.5 h-1.5 rounded-full ${src.dot}`} />
+                              {src.label}
+                            </span>
+                          </div>
+                          <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mt-0.5">
                             {fmtDate(b.checkIn)} → {fmtDate(b.checkOut)}
                           </p>
-                          <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-1">
+                          <p className="text-[11px] sm:text-xs text-neutral-400 dark:text-neutral-500 mt-1">
                             {b.nights} nights · {b.guests}
                           </p>
                         </div>
                       </div>
                       {service && (
                         <div
-                          className={`mt-3 flex items-start gap-2 rounded-lg p-2.5 text-sm ${
+                          className={`mt-3 flex items-start gap-2 rounded-lg p-2.5 text-xs sm:text-sm ${
                             service.urgent
                               ? "bg-red-50 dark:bg-red-950/50 text-red-700 dark:text-red-300"
                               : "bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300"
@@ -420,7 +467,7 @@ export default function PlannerPage() {
                               Service on {fmtDate(service.date)}
                               {service.urgent && " ⚠️"}
                             </p>
-                            <p className="text-xs opacity-80 mt-0.5">
+                            <p className="text-[11px] sm:text-xs opacity-80 mt-0.5">
                               {service.reason}
                             </p>
                           </div>
@@ -442,11 +489,11 @@ export default function PlannerPage() {
 
 function ServiceSchedule({ serviceDays }: { serviceDays: ServiceDay[] }) {
   return (
-    <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4">
-      <h3 className="font-semibold mb-3 flex items-center gap-2">
+    <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-3 sm:p-4">
+      <h3 className="text-sm sm:text-base font-semibold mb-3 flex items-center gap-2">
         🧹 Service Schedule
       </h3>
-      <div className="space-y-2">
+      <div className="space-y-1">
         {serviceDays.map((c, i) => (
           <div
             key={i}
@@ -458,12 +505,12 @@ function ServiceSchedule({ serviceDays }: { serviceDays: ServiceDay[] }) {
               }`}
             />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium">{fmtDate(c.date)}</p>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+              <p className="text-xs sm:text-sm font-medium">{fmtDate(c.date)}</p>
+              <p className="text-[11px] sm:text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
                 After {c.guest} checks out — prepare for next arrival
               </p>
               <p
-                className={`text-xs mt-0.5 ${
+                className={`text-[11px] sm:text-xs mt-0.5 ${
                   c.urgent
                     ? "text-red-500 font-medium"
                     : "text-neutral-400 dark:text-neutral-500"
